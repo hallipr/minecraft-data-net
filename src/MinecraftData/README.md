@@ -15,12 +15,22 @@ This library provides a .NET wrapper for the `minecraft-data` repository, giving
 // Initialize with specific edition and version
 var minecraft = new MinecraftData("bedrock", "1.19.1");
 
-// Asynchronously load enchantments data
+// Load different types of data
 var enchantments = await minecraft.LoadEnchantmentsAsync();
+var blocks = await minecraft.LoadBlocksAsync();
+var items = await minecraft.LoadItemsAsync();
+var biomes = await minecraft.LoadBiomesAsync();
+var entities = await minecraft.LoadEntitiesAsync();
+var effects = await minecraft.LoadEffectsAsync();
+var foods = await minecraft.LoadFoodsAsync();
+var instruments = await minecraft.LoadInstrumentsAsync();
+var materials = await minecraft.LoadMaterialsAsync();
+var particles = await minecraft.LoadParticlesAsync();
+var recipes = await minecraft.LoadRecipesAsync();
+var windows = await minecraft.LoadWindowsAsync();
 
-// Access all enchantments
-IReadOnlyCollection<Enchantment> allEnchantments = enchantments;
-Console.WriteLine($"Found {allEnchantments.Count} enchantments");
+// Working with enchantments
+Console.WriteLine($"Found {enchantments.Count} enchantments");
 
 // Access by index (ID)
 Enchantment respiration = enchantments[6]; // Get enchantment with ID 6
@@ -30,15 +40,25 @@ Console.WriteLine($"Enchantment ID 6: {respiration.DisplayName}");
 Enchantment featherFalling = enchantments["feather_falling"];
 Console.WriteLine($"Feather Falling max level: {featherFalling.MaxLevel}");
 
-// Check enchantment properties
-if (featherFalling.TreasureOnly)
-{
-    Console.WriteLine($"{featherFalling.DisplayName} is a treasure enchantment");
-}
+// Working with blocks
+var stone = blocks["stone"];
+Console.WriteLine($"Stone hardness: {stone.Hardness}");
 
-// Calculate enchantment costs
-int minCost = respiration.CalculateMinCost(3); // Cost for level 3
-Console.WriteLine($"{respiration.DisplayName} level 3 min cost: {minCost}");
+// Working with food items
+var goldenApple = foods["golden_apple"];
+Console.WriteLine($"Golden Apple food points: {goldenApple.FoodPoints}, saturation: {goldenApple.Saturation}");
+
+// Working with effects
+var speedEffect = effects["speed"];
+Console.WriteLine($"Speed effect is positive: {speedEffect.IsPositive}");
+
+// Working with recipes
+var recipesByResult = recipes[1]; // Get recipes for item with ID 1
+Console.WriteLine($"Found {recipesByResult.Count} recipes for item ID 1");
+
+// Working with windows
+var inventoryWindow = windows["inventory"];
+Console.WriteLine($"Inventory window has {inventoryWindow.Slots?.Length ?? 0} slot definitions");
 ```
 
 ## Implementation Details
