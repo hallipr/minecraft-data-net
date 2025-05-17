@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a variation of an item.
 /// </summary>
-public class ItemVariation
+public partial class ItemVariation
 {
     /// <summary>
     /// The metadata value of the variation.

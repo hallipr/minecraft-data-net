@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft block.
 /// </summary>
-public class Block
+public partial class Block
 {
     /// <summary>
     /// The unique identifier for a block.

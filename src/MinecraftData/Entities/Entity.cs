@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft entity.
 /// </summary>
-public class Entity
+public partial class Entity
 {
     /// <summary>
     /// The unique identifier for an entity.

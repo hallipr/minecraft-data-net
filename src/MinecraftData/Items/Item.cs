@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft item.
 /// </summary>
-public class Item
+public partial class Item
 {
     /// <summary>
     /// The unique identifier for an item.

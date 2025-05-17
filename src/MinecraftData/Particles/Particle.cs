@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft particle.
 /// </summary>
-public class Particle
+public partial class Particle
 {
     /// <summary>
     /// The unique identifier for a particle.
@@ -18,9 +18,4 @@ public class Particle
     /// </summary>
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
-    
-    /// <summary>
-    /// Returns the name of the particle.
-    /// </summary>
-    public override string ToString() => Name;
 }

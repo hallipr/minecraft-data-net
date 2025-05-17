@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a cost equation for an enchantment with coefficients a * level + b.
 /// </summary>
-public class EnchantmentCostEquation
+public partial class EnchantmentCostEquation
 {
     /// <summary>
     /// The 'a' coefficient in the equation a * level + b.

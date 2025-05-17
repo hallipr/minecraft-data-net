@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft food item.
 /// </summary>
-public class Food
+public partial class Food
 {
     /// <summary>
     /// The associated item ID for this food item.
@@ -60,17 +60,12 @@ public class Food
     /// </summary>
     [JsonPropertyName("variations")]
     public FoodVariation[]? Variations { get; set; }
-    
-    /// <summary>
-    /// Returns the display name of the food item.
-    /// </summary>
-    public override string ToString() => DisplayName;
 }
 
 /// <summary>
 /// Represents a variation of a food item.
 /// </summary>
-public class FoodVariation
+public partial class FoodVariation
 {
     /// <summary>
     /// The metadata value for this variation.
@@ -83,9 +78,4 @@ public class FoodVariation
     /// </summary>
     [JsonPropertyName("displayName")]
     public string DisplayName { get; set; } = string.Empty;
-    
-    /// <summary>
-    /// Returns the display name of the food variation.
-    /// </summary>
-    public override string ToString() => DisplayName;
 }

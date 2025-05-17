@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft biome.
 /// </summary>
-public class Biome
+public partial class Biome
 {
     /// <summary>
     /// The unique identifier for a biome.

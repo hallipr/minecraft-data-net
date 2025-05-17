@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Base class for Minecraft recipes.
 /// </summary>
-public abstract class Recipe
+public abstract partial class Recipe
 {
     /// <summary>
     /// The result of the recipe.
@@ -17,7 +17,7 @@ public abstract class Recipe
 /// <summary>
 /// Represents a shaped Minecraft recipe.
 /// </summary>
-public class ShapedRecipe : Recipe
+public partial class ShapedRecipe : Recipe
 {
     /// <summary>
     /// The input shape of the recipe.
@@ -35,7 +35,7 @@ public class ShapedRecipe : Recipe
 /// <summary>
 /// Represents a shapeless Minecraft recipe.
 /// </summary>
-public class ShapelessRecipe : Recipe
+public partial class ShapelessRecipe : Recipe
 {
     /// <summary>
     /// The ingredients for the recipe.
@@ -47,7 +47,7 @@ public class ShapelessRecipe : Recipe
 /// <summary>
 /// Represents a Bedrock edition recipe.
 /// </summary>
-public class BedrockRecipe
+public partial class BedrockRecipe
 {
     /// <summary>
     /// A unique identifier for this recipe.
