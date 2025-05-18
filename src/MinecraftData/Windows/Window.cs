@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft GUI window/screen.
 /// </summary>
-public partial class Window
+public partial class Window : INamedItem<string>
 {
     /// <summary>
     /// The unique identifier for the window.

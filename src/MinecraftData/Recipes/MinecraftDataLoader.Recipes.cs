@@ -10,7 +10,7 @@ public partial class MinecraftDataLoader
     /// <returns>A collection of Recipe objects.</returns>
     public async Task<RecipeCollection> LoadRecipesAsync()
     {
-        using var stream = await GetDataStreamAsync("recipes");
+        using var stream = GetDataStream("recipes", out string _);
         var document = await JsonDocument.ParseAsync(stream);
         return new RecipeCollection(document);
     }

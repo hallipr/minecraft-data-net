@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft musical instrument.
 /// </summary>
-public class Instrument
+public class Instrument : INamedItem<int>
 {
     /// <summary>
     /// The unique identifier for an instrument.

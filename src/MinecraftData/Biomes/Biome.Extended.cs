@@ -52,7 +52,7 @@ public partial class Biome
     /// Gets the biome's color as a System.Drawing.Color.
     /// </summary>
     [JsonIgnore]
-    public Color ColorValue => Color.FromArgb(this.Color);
+    public Color ColorValue => System.Drawing.Color.FromArgb(this.Color);
     
     /// <summary>
     /// Gets the biome's color as a hex string.

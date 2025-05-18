@@ -20,6 +20,8 @@ public partial class Enchantment
     /// <param name="level">The enchantment level.</param>
     /// <returns>The maximum cost.</returns>
     public int CalculateMaxCost(int level) => MaxCost.Calculate(level);
+
+    public string MaxLevelCostRange => $"({CalculateMinCost(MaxLevel)}, {CalculateMaxCost(MaxLevel)})";
     
     /// <summary>
     /// Checks if this enchantment is incompatible with the specified enchantment name.
@@ -36,15 +38,15 @@ public partial class Enchantment
     /// </summary>
     /// <param name="itemCategory">The category of the item.</param>
     /// <returns>True if the enchantment can be applied to the item category.</returns>
-    public bool IsApplicableTo(string itemCategory)
+    public bool IsApplicableTo(Item item)
     {
+        if(item.EnchantCategories == null)
+            return false;
+
         // This is a simplification. In reality, the rules for enchantment compatibility are more complex.
-        return Category.Equals(itemCategory, StringComparison.OrdinalIgnoreCase) || 
-               (Category == "breakable" && !string.IsNullOrEmpty(itemCategory));
+        return item.EnchantCategories.Contains(Category, StringComparer.OrdinalIgnoreCase);
     }
     
-    /// <summary>
-    /// Returns a string that represents the current object.
     /// </summary>
     public override string ToString() => DisplayName;
 }

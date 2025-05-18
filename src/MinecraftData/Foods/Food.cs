@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft food item.
 /// </summary>
-public partial class Food
+public partial class Food : INamedItem<int>
 {
     /// <summary>
     /// The associated item ID for this food item.

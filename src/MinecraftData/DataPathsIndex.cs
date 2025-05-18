@@ -9,6 +9,14 @@ internal class DataPathsIndex
 {
     private readonly Dictionary<string, Dictionary<string, Dictionary<string, string>>> _data = new();
     
+    public DataPathsIndex(JsonDocument document)
+    {
+        var parsed = document.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>();
+        if (parsed == null)
+            throw new InvalidOperationException("Failed to parse dataPaths.json");
+        _data = parsed;
+    }
+
     public bool ContainsEdition(string edition) => _data.ContainsKey(edition);
     
     public bool ContainsVersion(string edition, string version) => 
@@ -21,17 +29,15 @@ internal class DataPathsIndex
         
     public string GetPath(string edition, string version, string dataType)
     {
-        if (!ContainsEdition(edition))
+        if (!_data.TryGetValue(edition, out var editionData))
             throw new ArgumentException($"Edition '{edition}' not found", nameof(edition));
-            
-        if (!ContainsVersion(edition, version))
+
+        if (!editionData.TryGetValue(version, out var versionData))
             throw new ArgumentException($"Version '{version}' not found for edition '{edition}'", nameof(version));
             
-        var versionData = _data[edition][version];
-        
-        if (!versionData.ContainsKey(dataType))
-            throw new ArgumentException($"Data type '{dataType}' not available for {edition} {version}", nameof(dataType));
-            
-        return versionData[dataType];
+        if(!versionData.TryGetValue(dataType, out string? value))
+            throw new DataNotFoundException(dataType, edition, version);
+
+        return value;
     }
 }

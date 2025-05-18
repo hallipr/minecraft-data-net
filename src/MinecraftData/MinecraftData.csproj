@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\external\minecraft-data\data\**\*.json">
+    <Content Include="..\..\external\minecraft-data\data\**\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Data\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>

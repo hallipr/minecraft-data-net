@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft potion effect.
 /// </summary>
-public partial class Effect
+public partial class Effect : INamedItem<int>
 {
     /// <summary>
     /// The unique identifier for an effect.

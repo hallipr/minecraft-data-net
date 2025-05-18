@@ -1,3 +1,4 @@
+
 namespace MinecraftData;
 
 public partial class MinecraftDataLoader

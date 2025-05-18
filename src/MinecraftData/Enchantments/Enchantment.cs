@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft enchantment.
 /// </summary>
-public partial class Enchantment
+public partial class Enchantment : INamedItem<int>
 {
     /// <summary>
     /// The unique identifier for an enchantment.

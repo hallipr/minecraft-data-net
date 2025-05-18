@@ -1,83 +1,45 @@
-using System.Text.Json;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MinecraftData;
 
 /// <summary>
 /// A collection of Minecraft materials.
 /// </summary>
-public class MaterialCollection
+public class MaterialCollection : IReadOnlyDictionary<string, Dictionary<int, float>>
 {
-    private readonly Dictionary<string, Material> _materials = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, Dictionary<int, float>> _materials = new(StringComparer.OrdinalIgnoreCase);
     
     /// <summary>
     /// Initializes a new instance of the MaterialCollection class.
     /// </summary>
     /// <param name="materialsJson">The JSON document containing material data.</param>
-    public MaterialCollection(JsonDocument materialsJson)
+    public MaterialCollection(Dictionary<string, Dictionary<int, float>> materials)
     {
-        foreach (var materialProp in materialsJson.RootElement.EnumerateObject())
-        {
-            string materialName = materialProp.Name;
-            var properties = new Dictionary<int, float>();
-            
-            foreach (var prop in materialProp.Value.EnumerateObject())
-            {
-                if (int.TryParse(prop.Name, out int key))
-                {
-                    properties[key] = prop.Value.GetSingle();
-                }
-            }
-            
-            var material = new Material(materialName, properties);
-            _materials[materialName] = material;
-        }
+        _materials = materials;
     }
-    
-    /// <summary>
-    /// Gets all material names.
-    /// </summary>
-    public IEnumerable<string> Names => _materials.Keys;
-    
-    /// <summary>
-    /// Gets all materials.
-    /// </summary>
-    public IEnumerable<Material> Materials => _materials.Values;
-    
-    /// <summary>
-    /// Gets the number of materials in the collection.
-    /// </summary>
-    public int Count => _materials.Count;
-    
-    /// <summary>
-    /// Gets a material by its name.
-    /// </summary>
-    /// <param name="name">The material name.</param>
-    /// <returns>The material with the specified name.</returns>
-    public Material GetByName(string name)
-    {
-        if (_materials.TryGetValue(name, out var material))
-        {
-            return material;
-        }
-        
-        throw new KeyNotFoundException($"Material with name '{name}' not found");
-    }
-    
-    /// <summary>
-    /// Tries to get a material by its name.
-    /// </summary>
-    /// <param name="name">The material name.</param>
-    /// <param name="material">When this method returns, contains the material with the specified name, if found; otherwise, null.</param>
-    /// <returns>true if the material was found; otherwise, false.</returns>
-    public bool TryGetByName(string name, out Material? material)
-    {
-        return _materials.TryGetValue(name, out material);
-    }
-    
+
     /// <summary>
     /// Indexer to access materials by name.
     /// </summary>
     /// <param name="name">The material name.</param>
     /// <returns>The material with the specified name.</returns>
-    public Material this[string name] => GetByName(name);
+    public Dictionary<int, float> this[string name] => _materials[name];
+
+    /// <summary>
+    /// Gets the number of materials in the collection.
+    /// </summary>
+    public int Count => _materials.Count;
+
+    public IEnumerable<string> Keys => _materials.Keys;
+
+    public IEnumerable<Dictionary<int, float>> Values => _materials.Values;
+
+    public bool ContainsKey(string key) => _materials.ContainsKey(key);
+
+    public bool TryGetValue(string key, [MaybeNullWhen(false)] out Dictionary<int, float> value) => _materials.TryGetValue(key, out value);
+
+    public IEnumerator<KeyValuePair<string, Dictionary<int, float>>> GetEnumerator() => _materials.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => _materials.GetEnumerator();
 }

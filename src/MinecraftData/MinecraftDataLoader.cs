@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.IO;
+using System.Text.Json;
 
 namespace MinecraftData;
 
@@ -25,12 +26,44 @@ public partial class MinecraftDataLoader
         
         // Load the data paths index file
         string dataPathsJson = File.ReadAllText(Path.Combine(_dataBasePath, "dataPaths.json"));
-        _dataPathsIndex = JsonSerializer.Deserialize<DataPathsIndex>(dataPathsJson)
-            ?? throw new InvalidOperationException("Failed to load dataPaths.json");
-            
+        _dataPathsIndex = new DataPathsIndex(JsonDocument.Parse(dataPathsJson));
+
         if (!_dataPathsIndex.ContainsEdition(edition) || !_dataPathsIndex.ContainsVersion(edition, version))
         {
             throw new ArgumentException($"Edition '{edition}' with version '{version}' not found in dataPaths.json");
+        }
+    }
+
+    public async Task<MinecraftData> LoadAsync()
+    {
+        var result = new MinecraftData()
+        { 
+            Biomes = await TryLoadAsync(LoadBiomesAsync),
+            Blocks = await TryLoadAsync(LoadBlocksAsync),
+            Effects = await TryLoadAsync(LoadEffectsAsync),
+            Enchantments = await TryLoadAsync(LoadEnchantmentsAsync),
+            Entities = await TryLoadAsync(LoadEntitiesAsync),
+            Foods = await TryLoadAsync(LoadFoodsAsync),
+            Instruments = await TryLoadAsync(LoadInstrumentsAsync),
+            Items = await TryLoadAsync(LoadItemsAsync),
+            Materials = await TryLoadAsync(LoadMaterialsAsync),
+            Particles = await TryLoadAsync(LoadParticlesAsync),
+            Recipes = await TryLoadAsync(LoadRecipesAsync),
+            Windows = await TryLoadAsync(LoadWindowsAsync),
+        };
+
+        return result;
+    }
+
+    private static async Task<T?> TryLoadAsync<T>(Func<Task<T>> value)
+    {
+        try
+        {
+            return await value();
+        }
+        catch (DataNotFoundException)
+        {
+            return default;
         }
     }
 
@@ -41,21 +74,22 @@ public partial class MinecraftDataLoader
     /// <param name="dataType">The type of data to load (e.g., "enchantments", "blocks").</param>
     /// <param name="fileName">The name of the JSON file (defaults to dataType + ".json").</param>
     /// <returns>An array of deserialized objects.</returns>
-    private async Task<T> LoadDataAsync<T>(string dataType, string? fileName = null)
+    private async Task<T> LoadDataAsync<T>(string dataType)
     {
-        fileName ??= $"{dataType}.json";
-        string dataPath = _dataPathsIndex.GetPath(_edition, _version, dataType);
-        string filePath = Path.Combine(_dataBasePath, dataPath, fileName);
-
-        using FileStream stream = File.OpenRead(filePath);
+        using FileStream stream = GetDataStream(dataType, out string filePath);
         var result = await JsonSerializer.DeserializeAsync<T>(stream);
-        if (result == null)
-        {
-            throw new InvalidOperationException($"Failed to load data from {filePath}");
-        }
-        return result;
+
+        return result ?? throw new InvalidOperationException($"Failed to load data from {filePath}");
     }
-    
+
+    private FileStream GetDataStream(string dataType, out string filePath)
+    {
+        var fileName = $"{dataType}.json";
+        string dataPath = _dataPathsIndex.GetPath(_edition, _version, dataType);
+        filePath = Path.Combine(_dataBasePath, dataPath, fileName);
+        return File.OpenRead(filePath);
+    }
+
     /// <summary>
     /// Gets all available editions in the data.
     /// </summary>

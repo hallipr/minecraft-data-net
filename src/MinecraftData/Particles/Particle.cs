@@ -5,7 +5,7 @@ namespace MinecraftData;
 /// <summary>
 /// Represents a Minecraft particle.
 /// </summary>
-public partial class Particle
+public partial class Particle : INamedItem<int>
 {
     /// <summary>
     /// The unique identifier for a particle.
